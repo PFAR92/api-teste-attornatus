@@ -1,20 +1,20 @@
 package com.attornatus.api.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Embeddable
 @Entity
 @Table(name = "endereco")
 public class Address {
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -26,10 +26,11 @@ public class Address {
     private String number;
     @Column(name = "cidade")
     private String city;
-    private boolean isPrincipal;
+    private Boolean isPrincipal;
 
     @ManyToOne
     @JoinColumn(name = "person_id")
+    @JsonIgnore
     private Person person;
 
 }

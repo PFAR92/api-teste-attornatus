@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleBusiness(NotFoundException ex, WebRequest request){
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<Object> handleBusiness(CustomException ex, WebRequest request){
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
 

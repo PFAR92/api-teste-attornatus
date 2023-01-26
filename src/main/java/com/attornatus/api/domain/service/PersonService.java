@@ -1,12 +1,14 @@
 package com.attornatus.api.domain.service;
 
-import com.attornatus.api.domain.exceptions.NotFoundException;
+import com.attornatus.api.domain.exceptions.CustomException;
+import com.attornatus.api.domain.model.Address;
 import com.attornatus.api.domain.model.Person;
-import com.attornatus.api.domain.repository.AddressRepository;
 import com.attornatus.api.domain.repository.PersonRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -14,16 +16,22 @@ import java.util.List;
 public class PersonService {
 
     private PersonRepository personRepository;
-
-    private AddressRepository addressRepository;
-
-
     public List<Person> list() {
-        return personRepository.findAll();
+        List<Person> people = new ArrayList<>();
+        for (Person person : personRepository.findAll()){
+            List<Address> listMainFirst = mainAddressFirst(person.getAddressList());
+            person.setAddressList(listMainFirst);
+            people.add(person);
+        }
+        return people;
     }
 
     public Person searchId(Long id){
-        return personRepository.findById(id).orElseThrow(()->new NotFoundException("essa pessoa não existe"));
+        existsPerson(id);
+        Person person = personRepository.findById(id).get();
+        person.setAddressList(mainAddressFirst(person.getAddressList()));
+        return person;
+
     }
 
     public Person save (Person person){
@@ -31,19 +39,24 @@ public class PersonService {
     }
 
     public Person update(Person person){
-        if (existsPerson(person.getId())) personRepository.save(person);
-        return person;
+        existsPerson(person.getId());
+        return personRepository.save(person);
     }
 
     public void delete(Long id){
-        if (existsPerson(id)) personRepository.deleteById(id);
+        existsPerson(id);
+        personRepository.deleteById(id);
     }
 
-    private boolean existsPerson(Long id){
-        if (personRepository.existsById(id)){
-           return true;
-        } else {
-            throw new NotFoundException("Essa pessoa não existe");
+
+    public void existsPerson(Long id){
+        if (!personRepository.existsById(id)){
+            throw new CustomException("Essa pessoa não existe");
         }
+    }
+
+    //retorna sempre com o endereço principal em primeiro na lista
+    public List<Address> mainAddressFirst(List<Address> list){
+        return list.stream().sorted(Comparator.comparing(Address::getIsPrincipal).reversed()).toList();
     }
 }
