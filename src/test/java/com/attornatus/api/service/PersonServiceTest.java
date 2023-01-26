@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,8 +36,8 @@ public class PersonServiceTest {
 
     @Test
     public void listTest(){
-        var testPerson1 = new Person(1L,"Paulo",testAddress);
-        var testPerson2 = new Person(2L, "Felipe",testAddress);
+        var testPerson1 = new Person(1L,"Paulo", LocalDate.of(2000,1,1),testAddress);
+        var testPerson2 = new Person(2L, "Felipe", LocalDate.of(2000,1,1),testAddress);
 
         List<Person> expectedPersons = Arrays.asList(testPerson1, testPerson2);
         when(personRepository.findAll()).thenReturn(expectedPersons);
@@ -47,7 +48,7 @@ public class PersonServiceTest {
     @Test
     public void searchIdTest(){
         Long id = 1L;
-        var testPerson = new Person(id, "Paulo", testAddress);
+        var testPerson = new Person(id, "Paulo", LocalDate.of(2000,1,1), testAddress);
 
         when(personRepository.findById(id)).thenReturn(Optional.of(testPerson));
         Person expectedPerson = personService.searchId(id);
@@ -56,14 +57,14 @@ public class PersonServiceTest {
 
     @Test
     public void saveTest(){
-        var testPerson = new Person(1L, "Paulo", testAddress);
+        var testPerson = new Person(1L, "Paulo", LocalDate.of(2000,1,1), testAddress);
         personService.save(testPerson);
         verify(personRepository).save(any(Person.class));
     }
 
     @Test
     public void updateTest(){
-        var testPerson = new Person(1L, "Paulo", testAddress);
+        var testPerson = new Person(1L, "Paulo", LocalDate.of(2000,1,1), testAddress);
         when(personRepository.existsById(testPerson.getId())).thenReturn(true);
         personService.update(testPerson);
         verify(personRepository).save(testPerson);
@@ -71,7 +72,7 @@ public class PersonServiceTest {
 
     @Test
     public void deleteTest(){
-        var testPerson = new Person(1L, "Paulo", testAddress);
+        var testPerson = new Person(1L, "Paulo", LocalDate.of(2000,1,1), testAddress);
         when(personRepository.existsById(testPerson.getId())).thenReturn(true);
         personService.delete(testPerson.getId());
         verify(personRepository).deleteById(testPerson.getId());

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,8 +40,8 @@ public class PersonControllerTest {
 
     @Test
     public void listTest() throws Exception {
-        var testPerson1 = new Person(1L, "Paulo", testAddress);
-        var testPerson2 = new Person(2L, "Felipe", testAddress);
+        var testPerson1 = new Person(1L, "Paulo", LocalDate.of(2000,1,1), testAddress);
+        var testPerson2 = new Person(2L, "Felipe", LocalDate.of(2000,1,1), testAddress);
 
         List<Person> expectedPersons = Arrays.asList(testPerson1, testPerson2);
         when(personService.list()).thenReturn(expectedPersons);
@@ -54,7 +55,7 @@ public class PersonControllerTest {
     @Test
     public void searchId() throws Exception {
         Long id = 1L;
-        var testPerson1 = new Person(id, "Paulo", testAddress);
+        var testPerson1 = new Person(id, "Paulo", LocalDate.of(2000,1,1), testAddress);
 
         when(personService.searchId(id)).thenReturn(testPerson1);
 
@@ -66,7 +67,7 @@ public class PersonControllerTest {
 
     @Test
     public void saveTest() throws Exception {
-        var testPerson = new Person(1L, "Paulo", testAddress);
+        var testPerson = new Person(1L, "Paulo", LocalDate.of(2000,1,1), testAddress);
 
         String expectedJson = objectMapper.writeValueAsString(testPerson);
         mockMvc.perform(post("/people")
@@ -78,7 +79,7 @@ public class PersonControllerTest {
     @Test
     public void updateTest() throws Exception {
         Long id = 1L;
-        var testPerson = new Person(id, "Paulo", testAddress);
+        var testPerson = new Person(id, "Paulo", LocalDate.of(2000,1,1), testAddress);
 
         String expectedJson = objectMapper.writeValueAsString(testPerson);
         mockMvc.perform(put("/people/{id}",id)

@@ -3,6 +3,7 @@ package com.attornatus.api.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -21,6 +22,9 @@ public class Person {
 
     @Column(name = "nome")
     private String name;
+
+    @Column(name = "data_nascimento")
+    private LocalDate birthDate;
 
     @Embedded
     @Column(name = "enderecos")
