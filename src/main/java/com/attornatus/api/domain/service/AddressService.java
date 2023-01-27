@@ -24,9 +24,7 @@ public class AddressService {
         Person person = personService.searchId(personId);
         List<Address> addressList = new ArrayList<>(person.getAddressList());
 
-        if (addressRepository.existsByStreetAndNumberAndCity(address.getStreet(), address.getNumber(), address.getCity())){
-            throw new CustomException("Esse endereço já está cadastrado");
-        }
+        addressCanBeRegistered(personId, address);
 
         //se não tiver nenhum endereço salvo, ele é colocado como principal
         if (addressList.isEmpty()){
@@ -49,5 +47,16 @@ public class AddressService {
         return personService.mainAddressFirst(person.getAddressList());
     }
 
+    private void addressCanBeRegistered (Long personId, Address address){
+        boolean existsAddress = addressRepository.existsByStreetAndNumberAndCity(address.getStreet()
+                , address.getNumber(), address.getCity());
+        if (existsAddress){
+            Address registeredAddress = addressRepository.findByStreetAndNumberAndCity(address.getStreet()
+                    , address.getNumber(), address.getCity());
+            if (registeredAddress.getId().equals(personId)){
+                throw new CustomException("Esse endereço já está cadastrado para essa pessoa");
+            }
+        }
+    }
 
 }

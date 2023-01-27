@@ -14,4 +14,5 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     boolean existsByStreetAndNumberAndCity(String street, String number, String city);
 
+    Address findByStreetAndNumberAndCity(String street, String number, String city);
 }
