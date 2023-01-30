@@ -1,6 +1,7 @@
 package com.attornatus.api.domain.repository;
 
 import com.attornatus.api.domain.model.Address;
+import com.attornatus.api.domain.model.Person;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
-    boolean existsByStreetAndNumberAndCity(String street, String number, String city);
+    Address findByStreetAndNumberAndCityAndPerson(String street, String number, String city, Person person);
 
-    Address findByStreetAndNumberAndCity(String street, String number, String city);
+    boolean existsByStreetAndNumberAndCityAndPerson(String street, String number, String city, Person person);
 }

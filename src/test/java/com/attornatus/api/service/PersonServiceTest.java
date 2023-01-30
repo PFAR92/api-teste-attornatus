@@ -70,11 +70,4 @@ public class PersonServiceTest {
         verify(personRepository).save(testPerson);
     }
 
-    @Test
-    public void deleteTest(){
-        var testPerson = new Person(1L, "Paulo", LocalDate.of(2000,1,1), testAddress);
-        when(personRepository.existsById(testPerson.getId())).thenReturn(true);
-        personService.delete(testPerson.getId());
-        verify(personRepository).deleteById(testPerson.getId());
-    }
 }

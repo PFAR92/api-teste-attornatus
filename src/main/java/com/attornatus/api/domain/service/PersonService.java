@@ -43,11 +43,6 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public void delete(Long id){
-        existsPerson(id);
-        personRepository.deleteById(id);
-    }
-
 
     public void existsPerson(Long id){
         if (!personRepository.existsById(id)){

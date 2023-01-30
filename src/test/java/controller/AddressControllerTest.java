@@ -1,5 +1,6 @@
-package com.attornatus.api.controller;
+package controller;
 
+import com.attornatus.api.controller.AddressController;
 import com.attornatus.api.domain.model.Address;
 import com.attornatus.api.domain.service.AddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +42,9 @@ public class AddressControllerTest {
         Long testPersonID = 1L;
         var testAddress = new Address(1L, "Rua Teste", "12345-678", "123", "Cidade Teste", false, null);
 
+        testAddress.setStreet("Rua Teste");
+        testAddress.setNumber("123");
+        testAddress.setIsPrincipal(true);
 
         when(addressService.savePersonAddress(testPersonID, testAddress)).thenReturn(testAddress);
 
@@ -48,7 +52,7 @@ public class AddressControllerTest {
         mockMvc.perform(post("/addresses/{id}", testPersonID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(expectedJson))
-                .andExpect(status().isCreated());
+                        .andExpect(status().isCreated());
 
     }
 
