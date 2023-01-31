@@ -15,17 +15,6 @@ import java.util.List;
 public class PersonController {
 
     private PersonService personService;
-
-    @GetMapping
-    public List<Person> list(){
-        return personService.list();
-    }
-
-    @GetMapping(value = "/{id}")
-    public Person searchId(@PathVariable Long id){
-        return personService.searchId(id);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Person save(@Valid @RequestBody Person person){
@@ -33,8 +22,21 @@ public class PersonController {
     }
 
     @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Person update(@PathVariable Long id,@Valid @RequestBody Person person){
         person.setId(id);
         return personService.update(person);
+    }
+
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Person searchId(@PathVariable Long id){
+        return personService.searchId(id);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Person> list(){
+        return personService.list();
     }
 }
